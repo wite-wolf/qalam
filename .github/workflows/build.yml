@@ -17,16 +17,16 @@ jobs:
         with:
           node-version: '22'
       - run: npm install
-      - run: npx @electron/packager . "قلم" --platform=win32 --arch=x64 --icon=logo.ico --out=release --overwrite --asar
+      - run: npm run pack:win
+      - run: Copy-Item (Get-ChildItem dist/*.exe | Select-Object -First 1).FullName dist/qalam-windows.exe
       - uses: actions/upload-artifact@v4
         with:
           name: qalam-windows
-          path: release/قلم-win32-x64/
-      - run: cd release; Compress-Archive -Path قلم-win32-x64/* -DestinationPath qalam-windows.zip -Force
+          path: dist/qalam-windows.exe
       - uses: actions/upload-artifact@v4
         with:
           name: qalam-windows-zip
-          path: release/qalam-windows.zip
+          path: dist/qalam-windows.exe
 
   build-android:
     runs-on: ubuntu-latest
@@ -50,10 +50,11 @@ jobs:
       - name: Build APK
         working-directory: android
         run: ./gradlew assembleDebug
+      - run: cp android/app/build/outputs/apk/debug/app-debug.apk qalam-android.apk
       - uses: actions/upload-artifact@v4
         with:
           name: qalam-android
-          path: android/app/build/outputs/apk/debug/
+          path: qalam-android.apk
 
   create-release:
     runs-on: ubuntu-latest
@@ -76,6 +77,8 @@ jobs:
           name: قلم v${{ github.run_number }}
           body: |
             بناء تلقائي من commit ${{ github.sha }}
-            - 🪟 Windows: qalam-windows.zip
+            - 🪟 Windows: qalam-windows.exe (NSIS installer)
             - 📱 Android: qalam-android.apk
-          files: release-assets/*
+          files: |
+            release-assets/qalam-windows.exe
+            release-assets/qalam-android.apk

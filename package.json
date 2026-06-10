@@ -3,9 +3,42 @@
   "version": "1.0.0",
   "description": "السبورة البيضاء الذكية - تطبيق قلم",
   "main": "main.js",
+  "build": {
+    "appId": "com.qalam.whiteboard",
+    "productName": "قلم",
+    "directories": {
+      "output": "dist"
+    },
+    "files": [
+      "app.html",
+      "main.js",
+      "preload.js",
+      "css/**/*",
+      "js/**/*",
+      "logo.png",
+      "logo.ico",
+      "manifest.json",
+      "sw.js"
+    ],
+    "extraResources": [],
+    "win": {
+      "target": "nsis",
+      "icon": "logo.ico",
+      "artifactName": "قلم-Setup-${version}.${ext}"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "installerIcon": "logo.ico",
+      "uninstallerIcon": "logo.ico",
+      "installerHeaderIcon": "logo.ico",
+      "createDesktopShortcut": true,
+      "shortcutName": "قلم"
+    }
+  },
   "scripts": {
     "start": "electron .",
-    "pack:win": "npx @electron/packager . \"قلم\" --platform=win32 --arch=x64 --icon=logo.ico --out=dist --overwrite --asar --no-prune",
+    "pack:win": "npx electron-builder --win --x64",
     "build:www": "node -e \"const f=require('fs');const p=f.existsSync('www')&&f.rmSync('www',{recursive:true});f.mkdirSync('www');f.mkdirSync('www/app');['index.html','logo.png','logo.ico','preview.svg','screenshot-home.svg','screenshot-board.svg','screenshot-gallery.svg'].forEach(x=>f.copyFileSync(x,'www/'+x));f.copyFileSync('app.html','www/app/index.html');['logo.png','logo.ico','manifest.json','sw.js'].forEach(x=>f.copyFileSync(x,'www/app/'+x));f.cpSync('css','www/app/css',{recursive:true});f.cpSync('js','www/app/js',{recursive:true});f.writeFileSync('www/_redirects','# Redirect old paths\\n/app.html /app/ 301\\n/app /app/ 301\\n/downloads/* / 404\\n');console.log('www built');\"",
     "build:android": "npm run build:www && npx cap sync android",
     "build:apk": "npm run build:android && cd android && gradlew assembleDebug"
@@ -16,6 +49,7 @@
     "@capacitor/core": "^8.4.0",
     "@electron/packager": "^20.0.1",
     "electron": "^33.0.0",
+    "electron-builder": "^26.15.2",
     "ico-endec": "^0.1.6",
     "jimp": "^1.6.1",
     "rcedit": "^5.0.2",
