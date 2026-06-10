@@ -12,8 +12,8 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
-      - run: npm ci
+          node-version: '22'
+      - run: npm install
       - run: npx @electron/packager . "قلم" --platform=win32 --arch=x64 --icon=logo.ico --out=release --overwrite --asar
       - uses: actions/upload-artifact@v4
         with:
@@ -26,7 +26,7 @@ jobs:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
         with:
-          node-version: 20
+          node-version: '22'
       - name: Setup Java
         uses: actions/setup-java@v4
         with:
@@ -34,10 +34,12 @@ jobs:
           java-version: '17'
       - name: Setup Android SDK
         uses: android-actions/setup-android@v3
-      - run: npm ci
+      - run: npm install
       - run: npm install -g @capacitor/cli
       - run: |
+          mkdir -p www
           cp app.html www/index.html
+          cp -r css js logo.png logo.ico manifest.json sw.js www/
           npx cap copy android
       - name: Build APK
         working-directory: android
