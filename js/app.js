@@ -114,6 +114,23 @@ function setupMenus() {
     };
     input.click();
   });
+  document.getElementById('menuEmbed')?.addEventListener('click', () => {
+    closeAllMenus();
+    const code = WB.getEmbedCode();
+    const txt = document.createElement('textarea');
+    txt.value = code; txt.style.width = '100%'; txt.style.height = '80px';
+    txt.style.direction = 'ltr'; txt.style.fontSize = '11px';
+    const div = document.createElement('div');
+    div.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);background:#1a1a24;border:1px solid #2e2e42;border-radius:12px;padding:20px;z-index:9999;max-width:500px;width:90%;box-shadow:0 20px 60px rgba(0,0,0,0.5);direction:rtl;';
+    div.innerHTML = '<h3 style="margin-bottom:10px;font-size:14px;">🔗 كود التضمين (Embed)</h3><p style="font-size:12px;color:#9090a8;margin-bottom:8px;">انسخ هذا الكود وأضفه في موقعك لتضمين السبورة:</p>';
+    div.appendChild(txt);
+    const closeBtn = document.createElement('button');
+    closeBtn.textContent = '✕ إغلاق'; closeBtn.style.cssText = 'margin-top:10px;background:#6c5ce7;color:#fff;border:none;padding:6px 16px;border-radius:8px;cursor:pointer;font-size:12px;';
+    closeBtn.onclick = () => div.remove();
+    div.appendChild(closeBtn);
+    document.body.appendChild(div);
+    txt.select(); txt.setSelectionRange(0, 99999);
+  });
 
   document.getElementById('menuUndo')?.addEventListener('click', () => { WB.undo(); closeAllMenus(); });
   document.getElementById('menuRedo')?.addEventListener('click', () => { WB.redo(); closeAllMenus(); });
@@ -154,7 +171,7 @@ function setupKeyboard() {
       }
     }
     if (!mod) {
-      const map = { 'p':'pen', 'e':'eraser', 'h':'highlighter', 'l':'line', 'a':'arrow', 'r':'rect', 'c':'circle', 't':'triangle', 'n':'text', 'm':'hand' };
+      const map = { 'p':'pen', 'e':'eraser', 'h':'highlighter', 'l':'line', 'a':'arrow', 'r':'rect', 'c':'circle', 't':'triangle', 'n':'text', 'm':'hand', 'b':'connect' };
       const tool = map[e.key.toLowerCase()];
       if (tool) {
         document.querySelectorAll('.tool-btn[data-tool]').forEach(b => b.classList.remove('active'));

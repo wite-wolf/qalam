@@ -8,6 +8,7 @@ const CURSORS = {
   circle: "url('data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="16" cy="16" r="12" fill="none" stroke="rgba(0,214,143,0.5)" stroke-width="2"/></svg>') + "') 16 16, crosshair",
   triangle: "url('data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><polygon points="16,4 4,28 28,28" fill="none" stroke="rgba(0,214,143,0.5)" stroke-width="2"/></svg>') + "') 16 24, crosshair",
   text: "url('data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><text x="16" y="22" font-size="18" fill="rgba(108,92,231,0.7)" font-family="sans-serif" text-anchor="middle" font-weight="bold">T</text></svg>') + "') 16 16, crosshair",
+  connect: "url('data:image/svg+xml," + encodeURIComponent('<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32"><circle cx="8" cy="8" r="4" fill="rgba(0,214,143,0.5)" stroke="white" stroke-width="1"/><circle cx="24" cy="24" r="4" fill="rgba(0,214,143,0.5)" stroke="white" stroke-width="1"/><line x1="12" y1="12" x2="20" y2="20" stroke="rgba(0,214,143,0.6)" stroke-width="2"/></svg>') + "') 16 16, crosshair",
   hand: 'grab',
   default: 'crosshair'
 };
@@ -23,6 +24,8 @@ const WB = {
   startX: 0, startY: 0,
   savedState: null,
   qalamData: null,
+  connectNodes: [], connectLines: [], connectDrag: null,
+  connectRadius: 20,
 
   init(canvasId, gridId) {
     this.canvas = document.getElementById(canvasId);
@@ -70,7 +73,8 @@ const WB = {
     this.tool = t;
     this.setCursor();
     const names = { pen:'قلم', eraser:'ممحاة', highlighter:'هايلايتر', line:'خط',
-      arrow:'سهم', rect:'مستطيل', circle:'دائرة', triangle:'مثلث', text:'نص', hand:'تحريك' };
+      arrow:'سهم', rect:'مستطيل', circle:'دائرة', triangle:'مثلث', text:'نص', hand:'تحريك',
+      connect:'ربط' };
     document.getElementById('statusTool').textContent = names[t] || t;
   },
 
@@ -122,7 +126,26 @@ const WB = {
       if (text) { this.drawText(pos.x, pos.y, text); this.saveState(); }
       this.isDrawing = false;
     }
-  },
+
+    if (this.tool === 'connect') {
+      const hit = this.hitNode(pos.x, pos.y);
+      if (hit !== -1) {
+        if (this.connectDrag === null) {
+          this.connectDrag = hit;
+        } else {
+          this.connectLines.push({ from: this.connectDrag, to: hit, label: '' });
+          this.connectDrag = null;
+          this.renderConnect();
+        }
+      } else {
+        const label = prompt('اسم العقدة:', 'مفهوم');
+        if (label) {
+          this.connectNodes.push({ x: pos.x, y: pos.y, label, color: this.color });
+          this.renderConnect();
+        }
+      }
+      this.isDrawing = false;
+    }
 
   pointerMove(e) {
     const pos = this.getPos(e);
@@ -196,6 +219,7 @@ const WB = {
 
   clear() {
     this.ctx.clearRect(0, 0, this.width, this.height);
+    this.connectNodes = []; this.connectLines = []; this.connectDrag = null;
     this.history = []; this.historyIndex = -1;
     this.saveState(); this.render();
   },
@@ -339,5 +363,73 @@ const WB = {
     link.download = 'board.jpg';
     link.href = tmp.toDataURL('image/jpeg', 0.95);
     link.click(); this.updateStatus('تم التصدير JPG');
+  },
+
+  /* ─── Connect Tool (خيوط التوصيلات) ─── */
+  hitNode(x, y) {
+    for (let i = this.connectNodes.length - 1; i >= 0; i--) {
+      const n = this.connectNodes[i];
+      if (Math.abs(n.x - x) < this.connectRadius && Math.abs(n.y - y) < this.connectRadius) return i;
+    }
+    return -1;
+  },
+  get connectRadius() { return Math.max(25, this.size * 5); },
+
+  renderConnect() {
+    const ctx = this.ctx;
+    this.connectNodes.forEach(n => {
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, this.connectRadius, 0, Math.PI * 2);
+      ctx.fillStyle = n.color + '33';
+      ctx.fill();
+      ctx.strokeStyle = n.color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+      ctx.fillStyle = n.color;
+      ctx.font = 'bold 13px Tajawal, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.textBaseline = 'middle';
+      ctx.fillText(n.label, n.x, n.y);
+      ctx.restore();
+    });
+    this.connectLines.forEach(l => {
+      const from = this.connectNodes[l.from];
+      const to = this.connectNodes[l.to];
+      if (!from || !to) return;
+      ctx.save();
+      ctx.beginPath();
+      ctx.moveTo(from.x, from.y);
+      ctx.lineTo(to.x, to.y);
+      ctx.strokeStyle = '#6c5ce7';
+      ctx.lineWidth = 2;
+      ctx.setLineDash([6, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      const mx = (from.x + to.x) / 2, my = (from.y + to.y) / 2;
+      ctx.fillStyle = '#6c5ce7';
+      ctx.font = '11px Tajawal, sans-serif';
+      ctx.textAlign = 'center';
+      ctx.fillText('↔', mx, my - 8);
+      ctx.restore();
+    });
+    if (this.connectDrag !== null && this.connectNodes[this.connectDrag]) {
+      const n = this.connectNodes[this.connectDrag];
+      ctx.save();
+      ctx.beginPath();
+      ctx.arc(n.x, n.y, this.connectRadius + 6, 0, Math.PI * 2);
+      ctx.strokeStyle = '#00d68f';
+      ctx.lineWidth = 3;
+      ctx.setLineDash([4, 4]);
+      ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.restore();
+    }
+  },
+
+  /* ─── Embed (تضمين) ─── */
+  getEmbedCode() {
+    const url = 'https://qalam-net.pages.dev/app.html';
+    return `<iframe src="${url}" width="100%" height="600" style="border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.1);" title="قلم - السبورة البيضاء"></iframe>`;
   }
 };

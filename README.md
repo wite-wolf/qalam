@@ -17,7 +17,7 @@
 |--------|---------|
 | 🪟 Windows | [قم بتنزيل أحدث إصدار](https://github.com/wite-wolf/qalam/releases) |
 | 📱 Android | [قم بتنزيل أحدث إصدار](https://github.com/wite-wolf/qalam/releases) |
-| 🌐 Web | [qalam-app.pages.dev](https://qalam-app.pages.dev/app.html) |
+| 🌐 Web | [qalam-net.pages.dev](https://qalam-net.pages.dev/app.html) |
 
 ## 🛠 بناء من المصدر
 ```bash
