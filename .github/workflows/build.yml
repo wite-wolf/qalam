@@ -36,12 +36,9 @@ jobs:
         uses: android-actions/setup-android@v3
       - run: npm install
       - run: npm install -g @capacitor/cli
-      - run: |
-          mkdir -p www
-          cp app.html www/index.html
-          cp -r css js logo.png logo.ico manifest.json sw.js www/
-          npx cap add android
-          npx cap copy android
+      - run: npm run build:www
+      - run: npx cap add android
+      - run: npx cap copy android
       - name: Build APK
         working-directory: android
         run: ./gradlew assembleDebug

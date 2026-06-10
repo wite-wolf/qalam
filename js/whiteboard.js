@@ -145,7 +145,8 @@ const WB = {
         }
       }
       this.isDrawing = false;
-    },
+    }
+  },
 
   pointerMove(e) {
     const pos = this.getPos(e);

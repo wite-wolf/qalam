@@ -1,7 +1,7 @@
 {
   "appId": "com.qalam.whiteboard",
   "appName": "قلم",
-  "webDir": "www",
+  "webDir": "www/app",
   "bundledWebRuntime": false,
   "android": {
     "allowMixedContent": true,

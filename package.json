@@ -6,7 +6,7 @@
   "scripts": {
     "start": "electron .",
     "pack:win": "npx @electron/packager . \"قلم\" --platform=win32 --arch=x64 --icon=logo.ico --out=dist --overwrite --asar --no-prune",
-    "build:www": "node -e \"const f=require('fs');const p=f.existsSync('www')&&f.rmSync('www',{recursive:true});f.mkdirSync('www');['app.html','logo.png','logo.ico','manifest.json','sw.js'].forEach(x=>f.copyFileSync(x,'www/'+x));f.cpSync('css','www/css',{recursive:true});f.cpSync('js','www/js',{recursive:true});f.copyFileSync('app.html','www/index.html');console.log('www built');\"",
+    "build:www": "node -e \"const f=require('fs');const p=f.existsSync('www')&&f.rmSync('www',{recursive:true});f.mkdirSync('www');f.mkdirSync('www/app');['index.html','logo.png','logo.ico','preview.svg'].forEach(x=>f.copyFileSync(x,'www/'+x));f.copyFileSync('app.html','www/app/index.html');['logo.png','logo.ico','manifest.json','sw.js'].forEach(x=>f.copyFileSync(x,'www/app/'+x));f.cpSync('css','www/app/css',{recursive:true});f.cpSync('js','www/app/js',{recursive:true});console.log('www built');\"",
     "build:android": "npm run build:www && npx cap sync android",
     "build:apk": "npm run build:android && cd android && gradlew assembleDebug"
   },
