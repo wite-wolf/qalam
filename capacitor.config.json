@@ -1,0 +1,13 @@
+{
+  "appId": "com.qalam.whiteboard",
+  "appName": "قلم",
+  "webDir": "www",
+  "bundledWebRuntime": false,
+  "android": {
+    "allowMixedContent": true,
+    "backgroundColor": "#0f0f13"
+  },
+  "server": {
+    "androidScheme": "https"
+  }
+}

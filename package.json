@@ -1,0 +1,24 @@
+{
+  "name": "qalam-whiteboard",
+  "version": "1.0.0",
+  "description": "السبورة البيضاء الذكية - تطبيق قلم",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack:win": "npx @electron/packager . \"قلم\" --platform=win32 --arch=x64 --icon=logo.ico --out=dist --overwrite --asar --no-prune",
+    "build:www": "node -e \"const fse=require('fs-extra'); fse.emptyDirSync('www'); fse.copySync('app.html','www/index.html'); fse.copySync('app.html','www/app.html'); fse.copySync('logo.png','www/logo.png'); fse.copySync('logo.ico','www/logo.ico'); fse.copySync('manifest.json','www/manifest.json'); fse.copySync('sw.js','www/sw.js'); fse.copySync('css','www/css'); fse.copySync('js','www/js'); console.log('www built');\"",
+    "build:android": "npm run build:www && npx cap sync android",
+    "build:apk": "npm run build:android && cd android && gradlew assembleDebug"
+  },
+  "devDependencies": {
+    "@capacitor/android": "^8.4.0",
+    "@capacitor/cli": "^8.4.0",
+    "@capacitor/core": "^8.4.0",
+    "@electron/packager": "^20.0.1",
+    "electron": "^33.0.0",
+    "fs-extra": "^11.0.0",
+    "ico-endec": "^0.1.6",
+    "jimp": "^1.6.1",
+    "rcedit": "^5.0.2"
+  }
+}

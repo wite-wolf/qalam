@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl" class="h-full w-full">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <title>قلم - السبورة البيضاء الذكية</title>
+    <link rel="icon" href="logo.png">
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="apple-mobile-web-app-title" content="قلم">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Tajawal:wght@500;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/app.css">
+</head>
+<body class="flex flex-col h-full w-full overflow-hidden">
+
+    <div class="topbar">
+        <div class="logo">
+            <img src="logo.png" alt="">
+            <span>قلم</span>
+        </div>
+
+        <div class="menu">
+            <button class="menu-btn">ملف ▼</button>
+            <div class="menu-dropdown">
+                <button id="menuHome">🏠 الرئيسية</button>
+                <button id="menuNew">📄 جديد <span class="shortcut">Ctrl+N</span></button>
+                <button id="menuSave">💾 حفظ <span class="shortcut">Ctrl+S</span></button>
+                <div class="sep"></div>
+                <button id="menuExportQalam">📦 تصدير .qalam</button>
+                <button id="menuExportPNG">🖼 تصدير PNG <span class="shortcut">Ctrl+E</span></button>
+                <button id="menuExportJPG">🖼 تصدير JPG</button>
+                <div class="sep"></div>
+                <button id="menuImportQalam">📂 فتح .qalam</button>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="menu-btn">تعديل ▼</button>
+            <div class="menu-dropdown">
+                <button id="menuUndo">↩ تراجع <span class="shortcut">Ctrl+Z</span></button>
+                <button id="menuRedo">↪ إعادة <span class="shortcut">Ctrl+Y</span></button>
+                <div class="sep"></div>
+                <button id="menuClear">🗑 مسح الكل</button>
+            </div>
+        </div>
+
+        <div class="menu">
+            <button class="menu-btn">عرض ▼</button>
+            <div class="menu-dropdown">
+                <button id="menuZoomIn">🔍 تكبير <span class="shortcut">Ctrl+=</span></button>
+                <button id="menuZoomOut">🔍 تصغير <span class="shortcut">Ctrl+-</span></button>
+                <button id="menuZoomReset">🔍 100% <span class="shortcut">Ctrl+0</span></button>
+                <div class="sep"></div>
+                <button id="menuGrid">☐ إظهار الشبكة <span class="shortcut">Ctrl+G</span></button>
+            </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="tool-group">
+            <button class="tool-btn active" data-tool="pen" title="قلم (P)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="eraser" title="ممحاة (E)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h18M3 14h18m-9-8v12"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="highlighter" title="هايلايتر (H)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"/></svg>
+            </button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="tool-group">
+            <button class="tool-btn" data-tool="line" title="خط (L)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 19l14-14"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="arrow" title="سهم (A)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="rect" title="مستطيل (R)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h12a2 2 0 012 2v12a2 2 0 01-2 2H6a2 2 0 01-2-2V6z"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="circle" title="دائرة (C)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20z"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="triangle" title="مثلث (T)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2L2 22h20L12 2z"/></svg>
+            </button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="tool-group">
+            <button class="tool-btn" data-tool="text" title="نص (N)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 7V4h16v3M9 20h6M12 4v16"/></svg>
+            </button>
+            <button class="tool-btn" data-tool="hand" title="تحريك (H)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 15l-2 5L9 9l11 4-5 2zm0 0l5 5"/></svg>
+            </button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="tool-group">
+            <button class="tool-btn" id="undoBtn" title="تراجع (Ctrl+Z)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 10h13a4 4 0 010 8H7"/><path d="M7 6l-4 4 4 4"/></svg>
+            </button>
+            <button class="tool-btn" id="redoBtn" title="إعادة (Ctrl+Y)">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 10H8a4 4 0 000 8h9"/><path d="M17 6l4 4-4 4"/></svg>
+            </button>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="color-swatches">
+            <div class="color-swatch active" data-color="#6c5ce7" style="background:#6c5ce7" title="بنفسجي"></div>
+            <div class="color-swatch" data-color="#0f172a" style="background:#0f172a" title="أسود"></div>
+            <div class="color-swatch" data-color="#1d4ed8" style="background:#1d4ed8" title="أزرق"></div>
+            <div class="color-swatch" data-color="#dc2626" style="background:#dc2626" title="أحمر"></div>
+            <div class="color-swatch" data-color="#059669" style="background:#059669" title="أخضر"></div>
+            <div class="color-swatch" data-color="#d97706" style="background:#d97706" title="برتقالي"></div>
+            <div class="color-swatch" data-color="#ec4899" style="background:#ec4899" title="وردي"></div>
+            <div class="color-swatch" data-color="#64748b" style="background:#64748b" title="رمادي"></div>
+            <div class="custom-color-wrap">
+                <div class="color-swatch" title="لون مخصص"></div>
+                <input type="color" id="customColor" value="#6c5ce7">
+            </div>
+        </div>
+
+        <div class="sep"></div>
+
+        <div class="size-slider">
+            <input type="range" id="sizeSlider" min="1" max="40" value="5">
+            <span class="size-label" id="sizeLabel">5</span>
+        </div>
+    </div>
+
+    <div class="page-container">
+        <div class="page active" id="homePage">
+            <div id="homeContent"></div>
+        </div>
+
+        <div class="page" id="boardPage">
+            <div class="canvas-wrap">
+                <canvas id="mainCanvas"></canvas>
+                <canvas id="gridCanvas"></canvas>
+                <div class="zoom-ctl">
+                    <button id="zoomOutBtn" title="تصغير">−</button>
+                    <span id="zoomLabel">100%</span>
+                    <button id="zoomInBtn" title="تكبير">+</button>
+                    <button id="zoomResetBtn" title="إعادة">⟲</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="page" id="galleryPage">
+            <div id="galleryContent"></div>
+        </div>
+
+        <div class="page" id="settingsPage">
+            <div id="settingsContent"></div>
+        </div>
+    </div>
+
+    <div class="statusbar">
+        <span>🖌 <span id="statusTool">قلم</span></span>
+        <span>🎨 <span id="statusColor">#6c5ce7</span></span>
+        <span>📏 <span id="statusSize">5px</span></span>
+        <span style="margin-right:auto;">
+            <span class="dot" style="background:#00d68f"></span>
+            <span id="statusMsg">جاهز</span>
+        </span>
+    </div>
+
+    <div id="globalToast" class="toast">تم الحفظ</div>
+
+    <script>if ('serviceWorker' in navigator) { navigator.serviceWorker.register('sw.js'); }</script>
+    <script src="js/router.js"></script>
+    <script src="js/whiteboard.js"></script>
+    <script src="js/pages/home.js"></script>
+    <script src="js/pages/gallery.js"></script>
+    <script src="js/pages/settings.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>

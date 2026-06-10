@@ -1,0 +1,16 @@
+# قلم - Cloudflare Pages
+
+# قواعد إعادة التوجيه
+/app.html /app.html 200
+/sw.js /sw.js 200
+/manifest.json /manifest.json 200
+/css/* /css/:splat 200
+/js/* /js/:splat 200
+/logo.png /logo.png 200
+/logo.ico /logo.ico 200
+
+# صفحة الهبوط هي الصفحة الرئيسية
+/ /index.html 200
+
+# مجلد التحميلات
+/downloads/* /downloads/:splat 200
