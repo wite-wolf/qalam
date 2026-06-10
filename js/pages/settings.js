@@ -4,7 +4,7 @@ function renderSettingsPage() {
   container.innerHTML = `
     <div class="settings-header">
       <h2>⚙ الإعدادات</h2>
-      <button onclick="router.navigate('home')" style="background:none;border:none;color:#3b82f6;cursor:pointer;font-size:13px;margin-top:4px;">← رجوع</button>
+      <button onclick="router.navigate('home')" style="background:none;border:none;color:var(--accent,#6c5ce7);cursor:pointer;font-size:13px;margin-top:4px;">← رجوع</button>
     </div>
     <div class="settings-body">
       <div class="settings-group">
@@ -24,7 +24,7 @@ function renderSettingsPage() {
       </div>
       <div class="settings-group">
         <label>اللون الافتراضي</label>
-        <input type="color" id="setColor" value="${saved.color || '#0f172a'}">
+        <input type="color" id="setColor" value="${saved.color || '#6c5ce7'}">
       </div>
       <div class="settings-group">
         <label>إظهار الشبكة تلقائياً</label>
@@ -42,6 +42,20 @@ function renderSettingsPage() {
         </select>
       </div>
       <button class="btn-primary" id="saveSettingsBtn" style="margin-top:8px;">💾 حفظ الإعدادات</button>
+
+      <div style="margin-top:32px;padding-top:20px;border-top:1px solid var(--border,#2e2e42);">
+        <h3 style="font-size:15px;color:var(--text-primary,#f0f0f5);margin-bottom:12px;">ℹ عن التطبيق</h3>
+        <div style="font-size:13px;color:var(--text-muted,#9090a8);line-height:1.7;">
+          <p><strong style="color:var(--text-primary,#f0f0f5);">قلم</strong> - السبورة البيضاء الذكية</p>
+          <p>الإصدار: 1.0.0</p>
+          <p>الترخيص: MIT</p>
+          <p style="margin-top:8px;">المطور: <strong style="color:var(--accent,#6c5ce7);">wite wolf</strong></p>
+          <p>التواصل: <a href="https://t.me/j49_c" target="_blank" style="color:var(--accent,#6c5ce7);text-decoration:none;">@j49_c</a></p>
+          <p style="margin-top:6px;">
+            <a href="https://github.com/wite-wolf/qalam" target="_blank" style="color:var(--accent,#6c5ce7);text-decoration:none;">GitHub</a>
+          </p>
+        </div>
+      </div>
     </div>`;
 
   document.getElementById('saveSettingsBtn')?.addEventListener('click', () => {
