@@ -2,10 +2,12 @@
   "name": "qalam-whiteboard",
   "version": "1.0.0",
   "description": "السبورة البيضاء الذكية - تطبيق قلم",
+  "author": "wite wolf <host.for.wolf@gmail.com>",
   "main": "main.js",
   "build": {
     "appId": "com.qalam.whiteboard",
     "productName": "قلم",
+    "publish": null,
     "directories": {
       "output": "dist"
     },
