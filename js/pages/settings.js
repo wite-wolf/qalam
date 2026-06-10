@@ -70,7 +70,7 @@ function renderSettingsPage() {
     WB.setSize(settings.size);
     WB.setColor(settings.color);
     WB.maxHistory = settings.undo;
-    if (settings.grid) WB.toggleGrid();
+    if (settings.grid) WB.setGrid(true);
     showToast('تم حفظ الإعدادات');
     setTimeout(() => router.navigate('home'), 800);
   });

@@ -1,10 +1,18 @@
 node_modules/
 dist/
+release/
+release-download/
+release-copy/
+qalam-windows.zip
 www/
 android/
-downloads/
-*.7z
 *.zip
-.env
+*.7z
+*.exe
+!logo.png
+!logo.ico
 .DS_Store
 Thumbs.db
+الرئيسة.png
+السبورة البيضا .png
+المعرض.png

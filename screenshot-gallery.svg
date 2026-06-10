@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="800" height="500" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#0f0f13" rx="12"/>
+  <rect x="0" y="0" width="800" height="48" fill="#1a1a24"/>
+  <rect x="0" y="48" width="800" height="1" fill="#2e2e42"/>
+  <text x="30" y="30" fill="#f0f0f5" font-size="18" font-weight="700" font-family="Tajawal,sans-serif">🖼 المعرض</text>
+  <rect x="680" y="12" width="100" height="24" rx="6" fill="#6c5ce7"/>
+  <text x="690" y="28" fill="#fff" font-size="11" font-family="Tajawal,sans-serif">← رجوع</text>
+  <rect x="40" y="70" width="220" height="170" rx="10" fill="#1a1a24" stroke="#2e2e42" stroke-width="1"/>
+  <rect x="50" y="80" width="200" height="90" rx="6" fill="#23232f"/>
+  <text x="60" y="125" fill="#9090a8" font-size="24">🖼</text>
+  <text x="60" y="190" fill="#f0f0f5" font-size="13" font-weight="600" font-family="Tajawal,sans-serif">لوحة تجريبية</text>
+  <text x="60" y="206" fill="#9090a8" font-size="11" font-family="Tajawal,sans-serif">١١/٦/٢٠٢٦</text>
+  <rect x="110" y="215" width="60" height="22" rx="5" fill="#6c5ce7"/>
+  <text x="118" y="230" fill="#fff" font-size="10" font-family="Tajawal,sans-serif">✏ فتح</text>
+  <rect x="178" y="215" width="55" height="22" rx="5" fill="#23232f" stroke="#2e2e42" stroke-width="1"/>
+  <text x="186" y="230" fill="#ff6b6b" font-size="10" font-family="Tajawal,sans-serif">🗑 حذف</text>
+  <rect x="280" y="70" width="220" height="170" rx="10" fill="#1a1a24" stroke="#2e2e42" stroke-width="1"/>
+  <rect x="290" y="80" width="200" height="90" rx="6" fill="#23232f"/>
+  <text x="300" y="125" fill="#9090a8" font-size="24">🖼</text>
+  <text x="300" y="190" fill="#f0f0f5" font-size="13" font-weight="600" font-family="Tajawal,sans-serif">رسم هندسي</text>
+  <text x="300" y="206" fill="#9090a8" font-size="11" font-family="Tajawal,sans-serif">١٠/٦/٢٠٢٦</text>
+  <rect x="350" y="215" width="60" height="22" rx="5" fill="#6c5ce7"/>
+  <text x="358" y="230" fill="#fff" font-size="10" font-family="Tajawal,sans-serif">✏ فتح</text>
+  <rect x="418" y="215" width="55" height="22" rx="5" fill="#23232f" stroke="#2e2e42" stroke-width="1"/>
+  <text x="426" y="230" fill="#ff6b6b" font-size="10" font-family="Tajawal,sans-serif">🗑 حذف</text>
+  <rect x="520" y="70" width="220" height="170" rx="10" fill="#1a1a24" stroke="#2e2e42" stroke-width="1"/>
+  <rect x="530" y="80" width="200" height="90" rx="6" fill="#23232f"/>
+  <text x="540" y="125" fill="#9090a8" font-size="24">🖼</text>
+  <text x="540" y="190" fill="#f0f0f5" font-size="13" font-weight="600" font-family="Tajawal,sans-serif">مفاهيم فيزياء</text>
+  <text x="540" y="206" fill="#9090a8" font-size="11" font-family="Tajawal,sans-serif">٩/٦/٢٠٢٦</text>
+  <rect x="590" y="215" width="60" height="22" rx="5" fill="#6c5ce7"/>
+  <text x="598" y="230" fill="#fff" font-size="10" font-family="Tajawal,sans-serif">✏ فتح</text>
+  <rect x="658" y="215" width="55" height="22" rx="5" fill="#23232f" stroke="#2e2e42" stroke-width="1"/>
+  <text x="666" y="230" fill="#ff6b6b" font-size="10" font-family="Tajawal,sans-serif">🗑 حذف</text>
+  <rect x="40" y="260" width="220" height="170" rx="10" fill="#1a1a24" stroke="#2e2e42" stroke-width="1"/>
+  <rect x="50" y="270" width="200" height="90" rx="6" fill="#23232f"/>
+  <text x="60" y="315" fill="#9090a8" font-size="24">🖼</text>
+  <text x="60" y="380" fill="#f0f0f5" font-size="13" font-weight="600" font-family="Tajawal,sans-serif">خريطة ذهنية</text>
+  <text x="60" y="396" fill="#9090a8" font-size="11" font-family="Tajawal,sans-serif">٨/٦/٢٠٢٦</text>
+  <rect x="110" y="405" width="60" height="22" rx="5" fill="#6c5ce7"/>
+  <text x="118" y="420" fill="#fff" font-size="10" font-family="Tajawal,sans-serif">✏ فتح</text>
+  <rect x="178" y="405" width="55" height="22" rx="5" fill="#23232f" stroke="#2e2e42" stroke-width="1"/>
+  <text x="186" y="420" fill="#ff6b6b" font-size="10" font-family="Tajawal,sans-serif">🗑 حذف</text>
+</svg>

@@ -96,7 +96,7 @@ const WB = {
     c.addEventListener('mousedown', e => this.pointerDown(e));
     c.addEventListener('mousemove', e => this.pointerMove(e));
     c.addEventListener('mouseup', e => this.pointerUp(e));
-    c.addEventListener('mouseleave', e => { if (this.isDrawing) this.finishShape(), this.pointerUp(e); });
+    c.addEventListener('mouseleave', e => { if (this.isDrawing) this.pointerUp(e); });
     c.addEventListener('touchstart', e => { e.preventDefault(); this.pointerDown(e); }, { passive: false });
     c.addEventListener('touchmove', e => { e.preventDefault(); this.pointerMove(e); }, { passive: false });
     c.addEventListener('touchend', e => this.pointerUp(e));
@@ -160,10 +160,10 @@ const WB = {
     if (['pen','eraser','highlighter'].includes(this.tool)) {
       this.ctx.beginPath(); this.ctx.moveTo(this.lastX, this.lastY);
       this.ctx.lineTo(pos.x, pos.y);
-      if (this.tool === 'eraser') { this.ctx.strokeStyle = '#ffffff'; this.ctx.lineWidth = this.size * 4; }
+      if (this.tool === 'eraser') { this.ctx.globalCompositeOperation = 'destination-out'; this.ctx.strokeStyle = 'rgba(0,0,0,1)'; this.ctx.lineWidth = this.size * 4; }
       else if (this.tool === 'highlighter') { this.ctx.strokeStyle = this.color; this.ctx.lineWidth = this.size * 3; this.ctx.globalAlpha = 0.3; }
       else { this.ctx.strokeStyle = this.color; this.ctx.lineWidth = this.size; this.ctx.globalAlpha = 1; }
-      this.ctx.stroke(); this.ctx.globalAlpha = 1;
+      this.ctx.stroke(); this.ctx.globalAlpha = 1; this.ctx.globalCompositeOperation = 'source-over';
       this.lastX = pos.x; this.lastY = pos.y;
     }
 
@@ -228,7 +228,11 @@ const WB = {
   saveState() {
     this.historyIndex++;
     this.history = this.history.slice(0, this.historyIndex);
-    this.history.push(this.canvas.toDataURL());
+    this.history.push({
+      image: this.canvas.toDataURL(),
+      connectNodes: JSON.parse(JSON.stringify(this.connectNodes)),
+      connectLines: JSON.parse(JSON.stringify(this.connectLines))
+    });
     if (this.history.length > this.maxHistory) { this.history.shift(); this.historyIndex--; }
     this.updateUndoButtons();
   },
@@ -246,9 +250,24 @@ const WB = {
   },
 
   loadState(idx) {
+    const entry = this.history[idx];
+    if (!entry) return;
+    if (typeof entry === 'string') {
+      this.connectNodes = []; this.connectLines = [];
+      const img = new Image();
+      img.onload = () => { this.ctx.clearRect(0, 0, this.width, this.height); this.ctx.drawImage(img, 0, 0); };
+      img.src = entry;
+      return;
+    }
+    this.connectNodes = entry.connectNodes ? JSON.parse(JSON.stringify(entry.connectNodes)) : [];
+    this.connectLines = entry.connectLines ? JSON.parse(JSON.stringify(entry.connectLines)) : [];
     const img = new Image();
-    img.onload = () => { this.ctx.clearRect(0, 0, this.width, this.height); this.ctx.drawImage(img, 0, 0); };
-    img.src = this.history[idx];
+    img.onload = () => {
+      this.ctx.clearRect(0, 0, this.width, this.height);
+      this.ctx.drawImage(img, 0, 0);
+      this.renderConnect();
+    };
+    img.src = entry.image;
   },
 
   updateUndoButtons() {
@@ -269,14 +288,14 @@ const WB = {
   updateZoomLabel() { const el = document.getElementById('zoomLabel'); if (el) el.textContent = Math.round(this.zoom*100)+'%'; },
 
   toggleGrid() { this.gridEnabled = !this.gridEnabled; this.drawGrid(); return this.gridEnabled; },
+  setGrid(on) { this.gridEnabled = on; this.drawGrid(); },
 
   drawGrid() {
     const ctx = this.gridCtx; ctx.clearRect(0, 0, this.gridCanvas.width, this.gridCanvas.height);
     if (!this.gridEnabled) return;
     ctx.strokeStyle = 'rgba(148,163,184,0.15)'; ctx.lineWidth = 0.5;
-    const gs = this.gridSize * this.zoom, ox = this.panX % gs, oy = this.panY % gs;
-    for (let x = ox; x < this.width; x += gs) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, this.height); ctx.stroke(); }
-    for (let y = oy; y < this.height; y += gs) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(this.width, y); ctx.stroke(); }
+    for (let x = 0; x < this.width; x += this.gridSize) { ctx.beginPath(); ctx.moveTo(x, 0); ctx.lineTo(x, this.height); ctx.stroke(); }
+    for (let y = 0; y < this.height; y += this.gridSize) { ctx.beginPath(); ctx.moveTo(0, y); ctx.lineTo(this.width, y); ctx.stroke(); }
   },
 
   toDataURL() { return this.canvas.toDataURL(); },
@@ -430,7 +449,7 @@ const WB = {
 
   /* ─── Embed (تضمين) ─── */
   getEmbedCode() {
-    const url = 'https://qalam-net.pages.dev/app.html';
+    const url = 'https://qalam-net.pages.dev/app/';
     return `<iframe src="${url}" width="100%" height="600" style="border:none;border-radius:12px;box-shadow:0 4px 24px rgba(0,0,0,0.1);" title="قلم - السبورة البيضاء"></iframe>`;
   }
 };
