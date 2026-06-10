@@ -1,0 +1,48 @@
+name: Build & Release
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npx @electron/packager . "قلم" --platform=win32 --arch=x64 --icon=logo.ico --out=release --overwrite --asar
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qalam-windows
+          path: release/قلم-win32-x64/
+
+  build-android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Setup Android SDK
+        uses: android-actions/setup-android@v3
+      - run: npm ci
+      - run: npm install -g @capacitor/cli
+      - run: |
+          cp app.html www/index.html
+          npx cap copy android
+      - name: Build APK
+        working-directory: android
+        run: ./gradlew assembleDebug
+      - uses: actions/upload-artifact@v4
+        with:
+          name: qalam-android
+          path: android/app/build/outputs/apk/debug/
