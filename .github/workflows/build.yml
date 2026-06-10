@@ -40,6 +40,7 @@ jobs:
           mkdir -p www
           cp app.html www/index.html
           cp -r css js logo.png logo.ico manifest.json sw.js www/
+          npx cap add android
           npx cap copy android
       - name: Build APK
         working-directory: android
